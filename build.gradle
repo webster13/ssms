@@ -1,0 +1,93 @@
+group 'com'
+version '1.0.0'
+
+apply plugin: 'war'
+
+//统一编码为utf-8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+repositories {
+
+    maven {
+        url 'http://repo1.maven.org/maven2/'
+    }
+}
+configurations {
+    //1. 引入包里排除 commons-logging ，因为我们用 SLF4j
+    all*.exclude group: "commons-logging", module: "commons-logging"
+    //定义mybatis-generator的依赖
+//    mybatisGenerator
+}
+dependencies {
+    /*
+    |--------------------------------------------------------------------------
+    |  step 01 spring
+    |--------------------------------------------------------------------------
+    */
+    //spring-web-mvc,排除日志模块
+    compile 'org.springframework:spring-webmvc:4.2.5.RELEASE'
+    //spring-test
+    compile 'org.springframework:spring-test:4.2.5.RELEASE'
+    //测试
+    testCompile 'junit:junit:4.12'
+    /*
+    |--------------------------------------------------------------------------
+    |  step-04 日志
+    |--------------------------------------------------------------------------
+    */
+    //slf4j-log4j绑定
+    compile 'org.slf4j:slf4j-log4j12:1.7.18'
+    //common-logging实际调用slf4j
+    compile 'org.slf4j:jcl-over-slf4j:1.7.18'
+    //jdk14-logger实际调用slf4j
+    compile 'org.slf4j:jul-to-slf4j:1.7.18'
+    //servlet-api
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    /*
+    |--------------------------------------------------------------------------
+    |  step-05 数据库
+    |--------------------------------------------------------------------------
+    */
+    //jdbc
+    compile 'org.springframework:spring-jdbc:4.2.5.RELEASE'
+    //druid数据库连接池
+    compile 'com.alibaba:druid:1.0.17'
+    //mysql驱动
+    runtime 'mysql:mysql-connector-java:5.1.38'
+    //mybatis数据库核心
+    compile 'org.mybatis:mybatis:3.3.1'
+    //mybatis数据库spring支持
+    compile 'org.mybatis:mybatis-spring:1.2.4'
+    /*
+    |--------------------------------------------------------------------------
+    |  step-06 Shiro EHCache
+    |--------------------------------------------------------------------------
+    */
+    //Shiro支持spring插件
+    compile 'org.apache.shiro:shiro-spring:1.2.4'
+    //EHCache支持shiro插件
+    compile 'org.apache.shiro:shiro-ehcache:1.2.4'
+    //EHCache支持mybatis插件
+    compile 'org.mybatis.caches:mybatis-ehcache:1.0.3'
+    //Spring的mvc扩展支持包,使用EHCache / Freemarker 必须添加此包
+    compile 'org.springframework:spring-context-support:4.2.5.RELEASE'
+    /*
+    |--------------------------------------------------------------------------
+    |  常用工具集
+    |--------------------------------------------------------------------------
+    */
+    //谷歌guava工具包
+    compile 'com.google.guava:guava:19.0'
+    //apache工具包
+    compile 'org.apache.commons:commons-lang3:3.4'
+
+
+
+
+
+
+
+
+
+
+}

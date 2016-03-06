@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--
+    ********************************************************************************
+    *      spring 基础配置
+    ********************************************************************************
+    -->
+    <!-- step-01 扫描注解,排除@Controller-->
+    <context:component-scan base-package="com.learn">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+    </context:component-scan>
+
+    <!-- step-05 加载配置文件-->
+    <context:property-placeholder location="classpath:app.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+
+    <!-- step-01 View 视图解析器 -->
+    <import resource="classpath:spring/bean/view-bean.xml"/>
+    <!-- step-04 Log4j 日志-->
+    <import resource="classpath:spring/bean/log4j-bean.xml"/>
+    <!-- step-05 Druid 连接池-->
+    <import resource="classpath:spring/bean/druid-bean.xml"/>
+    <!-- step-05 Mybatis 数据库dao-->
+    <import resource="classpath:spring/bean/mybatis-bean.xml"/>
+    <!-- step-06 EHCache 缓存-->
+    <import resource="classpath:spring/bean/ehcache-bean.xml"/>
+    <!-- step-07 Shiro 权限管理-->
+    <import resource="classpath:spring/bean/shiro-bean.xml"/>
+
+
+
+
+</beans>
