@@ -54,7 +54,8 @@ td {
 </head>
 
 <body>
-	<form action="./app/user/login" method="post">
+提示：${msg}
+	<form action="${pageContext.request.contextPath}/learn/login" method="post">
 		<table>
 			<tr>
 				<td colspan="2" class="title"><span>Test Page</span>
