@@ -9,6 +9,7 @@
     <h3>------------ step-07 shiro 需要权限------------------------------</h3>
     <a href="${pageContext.request.contextPath}/learn/shiro/user-center"> 用户中心</a>&nbsp;|&nbsp;
     <a href="${pageContext.request.contextPath}/learn/shiro/admin-center"> 管理员中心</a>&nbsp;|&nbsp;
+    <a href="${pageContext.request.contextPath}/learn/login_out"> 登出</a>&nbsp;|&nbsp;
 
 
 </div>
@@ -46,7 +47,7 @@
 </div>
 
 <div style="float: left;clear: both">
-    <h3>------------ step-02 mvc---------------------------------</h3>
+    <h3>------------ step-02 mvc 需要rememberMe---------------------------------</h3>
     <a href="${pageContext.request.contextPath}/learn/mvc/json"> 直接返回json</a>&nbsp;|&nbsp;
 
     <a href="${pageContext.request.contextPath}/learn/mvc/cn">产生乱码的解决</a>&nbsp;|&nbsp;

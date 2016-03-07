@@ -1,101 +1,74 @@
 package com.learn.step07shiro;
 
+import javax.annotation.Resource;
 
 import com.learn.step06ehcache.entity.User;
 import com.learn.step06ehcache.service.UserService;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
-import javax.annotation.Resource;
 
 public class MyRealm extends AuthorizingRealm {
 
     @Resource
-    UserService userService;
+    private UserService userService;
 
     /**
-     *
-     * @return 本Realm的名字
+     * 回调函数,用于权限验证
+     * @param principals 用户名
+     * @return 验证信息
      */
     @Override
-    public String getName() {
-        return this.getClass().getSimpleName();
+    protected AuthorizationInfo doGetAuthorizationInfo(
+            PrincipalCollection principals) {
+        return null;
     }
 
     /**
-     * 通过数据库获取角色的信息:角色,权限
+     * 回调函数,用于登录验证
+     * @param token 钥匙
+     * @return 验证信息
+     * @throws AuthenticationException 无法验证的异常
      */
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String username = (String)principals.getPrimaryPrincipal();
-        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.setRoles(userService.getRoles(username));
-        authorizationInfo.setStringPermissions(userService.getPermissions(username));
-        return authorizationInfo;
-    }
-
-    /**
-     * 通过数据库,认证用户
-     */
+    @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        String username = (String)token.getPrincipal();
+        String username = (String) token.getPrincipal();
+        // 调用userService查询是否有此用户  
         User user = userService.findByUsername(username);
-        if(user == null) {
-            throw new UnknownAccountException();//没找到帐号
+        if (user == null) {
+            // 抛出 帐号找不到异常  
+            throw new UnknownAccountException();
         }
-        if(Boolean.TRUE.equals(user.getLocked())) {
-            throw new LockedAccountException(); //帐号锁定
+        // 判断帐号是否锁定  
+        if (Boolean.TRUE.equals(user.getLocked())) {
+            // 抛出 帐号锁定异常  
+            throw new LockedAccountException();
         }
-        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以在此判断或自定义实现
-        return new SimpleAuthenticationInfo(
-                user.getUsername(), //用户名
-                user.getPassword(), //密码
-                ByteSource.Util.bytes(user.getUsername()+user.getSalt()),//salt=username+salt
-                getName()  //realm name
+        // 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配  
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                user.getUsername(), // 用户名  
+                user.getPassword(), // 密码  
+                ByteSource.Util.bytes(user.getUsername()+user.getSalt()),// salt=username+salt
+                getName() // realm name  
         );
+        return authenticationInfo;
     }
+
 
     /**
      * 清除缓存
      */
-    public void clearAllCache()
-    {
-        clearAllCachedAuthenticationInfo();
-        clearAllCachedAuthorizationInfo();
-    }
-
-    @Override
-    public void clearCachedAuthorizationInfo(PrincipalCollection principals)
-    {
-        super.clearCachedAuthorizationInfo(principals);
-    }
-
-    @Override
-    public void clearCachedAuthenticationInfo(PrincipalCollection principals)
-    {
-        super.clearCachedAuthenticationInfo(principals);
-    }
-
-    @Override
-    public void clearCache(PrincipalCollection principals)
-    {
-        super.clearCache(principals);
-    }
-
-    public void clearAllCachedAuthorizationInfo()
-    {
+    public void clearAllCache() {
+        getAuthenticationCache().clear();
         getAuthorizationCache().clear();
     }
 
-    public void clearAllCachedAuthenticationInfo()
-    {
-        getAuthenticationCache().clear();
-    }
-
-
 }
-
-

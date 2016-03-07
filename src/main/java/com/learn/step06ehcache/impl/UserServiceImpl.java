@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
      * 使用缓存,则不用再访问数据库
      */
 //    @Cacheable(value = "myCache" ,key="#id + 'findById'")
-    @Cacheable(value = "myCache" )
+    @Cacheable(value = "sysCache" )
     @Override
     public User findById(Integer id) {
         System.out.println("@@@@@=>select from db");

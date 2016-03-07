@@ -77,6 +77,11 @@ public class User implements Serializable{
         this.locked = locked;
     }
 
+    public String getCredentialsSalt() {
+        return username + salt;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

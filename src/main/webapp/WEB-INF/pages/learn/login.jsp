@@ -63,17 +63,17 @@ td {
 			</tr>
 			<tr>
 				<td class="left">username:</td>
-				<td><input type="text" name="username" />
+				<td><input type="text" name="username" value="zhangsan"/>
 				</td>
 			</tr>
 			<tr>
 				<td class="left">password:</td>
-				<td><input type="text" name="password" /></td>
+				<td><input type="text" name="password" value="33333"/></td>
 			</tr>
             <tr>
                 <td class="left">Remember Me</td>
                 <%-- rememberMe，password，username字段名是shiro默认的--%>
-                <td><input type="checkbox" name="rememberMe" value="true"/></td>
+                <td><input type="checkbox" name="rememberMe" value="true" checked/></td>
             </tr>
 			<tr class="center">
 				<td colspan="2"><input type="submit" value="submit" />&nbsp;&nbsp;&nbsp;
